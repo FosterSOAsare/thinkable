@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useUserContext } from "../context/user.context";
 import axiosInstance from "../lib/axios";
 const Home = () => {
 	const { user, userDispatchFunc } = useUserContext();
-	console.log(user);
+	const [showProfile, setShowProfile] = useState(false);
+
 	async function logoutUser() {
 		try {
 			await axiosInstance.get("/auth/logout");
@@ -16,10 +18,23 @@ const Home = () => {
 			<header className="w-full flex items-center justify-center sticky top-0 left-0 z-[4] bg-white shadow-lg">
 				<div className="w-full flex items-center justify-between py-6 px-4 max-w-5xl h-full">
 					<h3 className="text-3xl font-bold">Logo</h3>
-					<div className="w-12 h-12 rounded-full bg-[red] flex items-center justify-center"></div>
+					<div className="w-12 h-12  relative rounded-full bg-slate-200">
+						<p className="text-3xl font-bold w-full h-full rounded-full  flex items-center justify-center" onClick={() => setShowProfile((prev) => !prev)}>
+							{user?.user?.email?.substring(0, 1).toUpperCase()}
+						</p>
+						{showProfile && (
+							<div className="w-[200px] h-auto bg-slate-200 rounded-[5px] absolute  flex items-start p-5 flex-col justify-start -left-[70px] top-[110%] text-sm">
+								<p>{user?.user?.email}</p>
+								<p className="opacity-50">Logged in with: {user?.user?.provider === "local" ? "email and password" : user?.user?.provider}</p>
+								<button onClick={logoutUser} className="w-full bg-green-400 h-8 mt-4 rounded-[5px]">
+									Logout
+								</button>
+							</div>
+						)}
+					</div>
 				</div>
 			</header>
-			<button onClick={logoutUser}>Logout</button>
+
 			<main className="w-full h-[300px] mt-4">
 				<div className="w-full  max-w-5xl mx-auto px-4">
 					<div className="w-full h-12  flex items-center justify-between mt-8 shadow-md">
