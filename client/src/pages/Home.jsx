@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { useUserContext } from "../context/user.context";
+import { useTodoContext } from "../context/todos.context";
 import axiosInstance from "../lib/axios";
+import TodoModal from "../components/TodoModal";
+import Todo from "../components/Todo";
+
 const Home = () => {
 	const { user, userDispatchFunc } = useUserContext();
+	const { todos } = useTodoContext();
+	const [todo, setTodo] = useState({ title: "", description: "" });
+	const [openModal, setOpenModal] = useState(false);
+
 	const [showProfile, setShowProfile] = useState(false);
 
 	async function logoutUser() {
@@ -13,6 +21,7 @@ const Home = () => {
 			window.location.reload();
 		}
 	}
+
 	return (
 		<div className="w-[100vw]  bg-[#f2f2f2] min-h-screen">
 			<header className="w-full flex items-center justify-center sticky top-0 left-0 z-[4] bg-white shadow-lg">
@@ -35,16 +44,29 @@ const Home = () => {
 				</div>
 			</header>
 
-			<main className="w-full h-[300px] mt-4">
+			<main className="w-full h-auto mt-4 pb-12">
 				<div className="w-full  max-w-5xl mx-auto px-4">
 					<div className="w-full h-12  flex items-center justify-between mt-8 shadow-md">
-						<input type="text" className="px-4 text-black appearance-none outline-0 w-4/5 h-full" aria-label="todo" />
-						<button className="!w-1/5 text-white bg-[#165d86c4] h-full">Add Todo</button>
+						<input
+							type="text"
+							className="px-4 text-black appearance-none outline-0 w-4/5 h-full"
+							aria-label="todo"
+							value={todo.title}
+							onChange={(e) => setTodo((prev) => ({ ...prev, title: e.target.value }))}
+						/>
+						<button className="!w-1/5 text-white bg-[#165d86c4] h-full" onClick={() => setOpenModal(true)} disabled={todo?.title.length === 0}>
+							Add Todo
+						</button>
 					</div>
 
-					<div></div>
+					<div className="mt-8">
+						{todos?.todos.map((todo, index) => (
+							<Todo key={index} todo={todo} todos={todos.todos} setOpenModal={setOpenModal} setTodo={setTodo} />
+						))}
+					</div>
 				</div>
 			</main>
+			{openModal && <TodoModal setOpenModal={setOpenModal} todo={todo} setTodo={setTodo} />}
 		</div>
 	);
 };

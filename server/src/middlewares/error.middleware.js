@@ -3,7 +3,7 @@ function errors(err, req, res, next) {
 	if (err) {
 		res.json({ error: err.message });
 	}
-	console.log({ error: err.message });
+	console.log({ error: err });
 }
 
 module.exports = errors;

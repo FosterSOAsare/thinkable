@@ -7,7 +7,6 @@ const ProtectedRoute = ({ el, registerRequired = false }) => {
 	const navigate = useNavigate();
 	const data = useUserContext();
 	const { loading, user, error } = data.user;
-	console.log(user, loading, error, registerRequired);
 
 	useEffect(() => {
 		if (!loading && !registerRequired && !error && user._id) {
