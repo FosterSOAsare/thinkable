@@ -15,7 +15,7 @@ const Login = () => {
 		email: "",
 		password: "",
 	});
-	const { user, userDispatchFunc } = useUserContext();
+	const { userDispatchFunc } = useUserContext();
 
 	function handleChange(name, value) {
 		setData((prev) => ({ ...prev, [name]: value }));
@@ -46,14 +46,14 @@ const Login = () => {
 
 	return (
 		<main className="w-full h-screen bg-[#e2e2e2] flex items-center justify-center">
-			<section className="w-full max-w-2xl h-4/5 rounded-[5px] bg-white shadow-lg mx-auto p-8 flex flex-col items-center justify-start">
+			<section className="w-full max-w-2xl h-4/5 rounded-[5px] bg-white shadow-lg mx-auto p-4 md:p-8 py-8 flex flex-col items-center justify-start">
 				<h1 className="text-3xl font-bold mb-2">Welcome back</h1>
 				<p className="opacity-70">Enter your details to login</p>
-				<div className="w-4/5 mt-12 mb-8">
+				<div className="w-full md:w-4/5 mt-12 mb-8">
 					<PrimaryInput name="email" placeholder="example@gmail.com" label="Enter Email:" value={data.email} handleChange={handleChange} />
 					<PrimaryInput name="password" type="password" placeholder="**********" label="Enter Password:" value={data.password} handleChange={handleChange} />
 				</div>
-				<div className="w-4/5 ">
+				<div className="w-full md:w-4/5 ">
 					<PrimaryButton text="Login" sx="mb-4" handleClick={useLocalAuth} disabled={disabled} />
 					<SocialSignOn text="Continue with google" icon={FcGoogle} link="/api/v1/auth/google" />
 				</div>

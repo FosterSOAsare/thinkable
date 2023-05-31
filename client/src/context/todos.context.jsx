@@ -30,6 +30,8 @@ const TodoProvider = ({ children }) => {
 				return { loading: false, error: null, todos: [action.payload, ...state.todos] };
 			case "updateTodo":
 				return { loading: false, error: null, todos: state.todos.map((todo) => (todo._id === action.payload._id ? { ...todo, ...action.payload } : todo)) };
+			case "deleteTodo":
+				return { loading: false, error: null, todos: state.todos.filter((todo) => todo._id !== action.payload._id) };
 			default:
 				state;
 		}

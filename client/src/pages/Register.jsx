@@ -41,14 +41,14 @@ const Register = () => {
 	}
 	return (
 		<main className="w-full h-screen bg-[#e2e2e2] flex items-center justify-center">
-			<section className="w-full max-w-2xl h-4/5 rounded-[5px] bg-white shadow-lg mx-auto p-8 flex flex-col items-center justify-start">
+			<section className="w-full max-w-2xl h-auto rounded-[5px] bg-white shadow-lg mx-auto p-4 py-8 md:p-8 flex flex-col items-center justify-start">
 				<h1 className="text-3xl font-bold mb-2">Welcome to Todo-App</h1>
 				<p className="opacity-70">Please enter your details to create an account</p>
-				<div className="w-4/5 mt-12 mb-8">
+				<div className="w-full md:w-4/5 mt-12 mb-8">
 					<PrimaryInput name="email" placeholder="example@gmail.com" label="Enter Email:" value={data.email} handleChange={handleChange} />
 					<PrimaryInput name="password" type="password" placeholder="**********" label="Enter Password:" value={data.password} handleChange={handleChange} />
 				</div>
-				<div className="w-4/5 ">
+				<div className="w-full md:w-4/5 ">
 					<PrimaryButton text="Sign up" sx="mb-4 bg-blue-900" handleClick={useLocalAuth} disabled={loading} />
 					<SocialSignOn text="Continue with google" icon={FcGoogle} link="/api/v1/auth/google" />
 				</div>

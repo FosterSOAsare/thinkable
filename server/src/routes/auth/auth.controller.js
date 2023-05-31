@@ -24,10 +24,11 @@ const controllerAuthLocalLogin = asyncHandler(async (req, res) => {
 });
 const controllerAuthThirdParty = asyncHandler(async (req, res) => {
 	if (!req.isAuthenticated()) {
+		console.log("Tte");
 		res.status(401).json({ success: false, message: "Authentication failed" });
 		return;
 	}
-	let { id, provider, email, image, displayName } = req.user;
+	let { id, provider, email } = req.user;
 	// Check if user exists , if no , create a new user
 	let user = await User.findOne({ id, provider });
 	if (!user) {
@@ -40,6 +41,7 @@ const controllerAuthThirdParty = asyncHandler(async (req, res) => {
 		provider: user.provider,
 		email: user.email || "",
 	};
+
 	res.redirect(`${process.env.CLIENT_URL}/login/verify`);
 });
 const controllerAuthLocalRegister = asyncHandler(async (req, res) => {

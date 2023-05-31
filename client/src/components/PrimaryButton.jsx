@@ -12,7 +12,12 @@ const PrimaryButton = ({ text, handleClick, type = "button", disabled = false, s
 					} bg-sec rounded-[5px] text-white py-3 text-md hover:opacity-[0.7] hover:scale-[1.1] transition-all duration-300 ${sx}`}
 					type={type}
 					disabled={disabled}
-					onClick={(e) => (handleClick ? handleClick(e) : (e) => console.log(e))}>
+					onClick={(e) => {
+						if (handleClick) {
+							e.stopPropagation();
+							handleClick();
+						}
+					}}>
 					{text}
 				</button>
 			)}

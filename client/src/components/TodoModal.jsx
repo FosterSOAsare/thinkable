@@ -24,7 +24,6 @@ const TodoModal = ({ setOpenModal, todo, setTodo }) => {
 		// Post Todo
 		try {
 			let { data } = await axiosInstance.post("/todos", { title, description });
-			console.log(data);
 			todoDispatchFunc({ type: "addTodo", payload: data });
 			setTodo({ title: "", description: "" });
 			setOpenModal(false);
@@ -52,9 +51,9 @@ const TodoModal = ({ setOpenModal, todo, setTodo }) => {
 		}
 	}
 	return (
-		<aside className="absolute z-[6] left-0 right-0  top-0 bottom-0 m-auto h-[75vh] block w-full max-w-2xl bg-slate-100 shadow-lg p-4 px-10">
+		<aside className="absolute z-[6] left-0 right-0 pb-8 min-h-screen md:min-h-0 top-0 md:top-[5vh] m-auto h-auto block w-full max-w-2xl bg-slate-100 shadow-lg p-4 px-4 md:px-10">
 			<form action="" className="w-full">
-				<h3 className="text-center text-3xl font-bold nb-4">Create A New Todo</h3>
+				<h3 className="text-center text-3xl font-bold mb-4">{!todo.type ? "Create A New" : "Update"} Todo</h3>
 				<PrimaryInput name="title" label="Enter Todo Name:" placeholder="Enter Todo Here" value={todo.title} handleChange={handleChange} />
 				<div className={`w-full  h-auto mb-4`}>
 					<label htmlFor={name} className="block text-sm text-primary font-medium mb-2">
