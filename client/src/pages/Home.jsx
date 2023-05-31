@@ -86,7 +86,7 @@ const Home = () => {
 					</div>
 				</div>
 			</main>
-			{viewTodo._id && <ViewTodo viewTodo={viewTodo} setTodo={setTodo} setOpenModal={setOpenModal} setViewTodo={setViewTodo} deleteTodo={deleteTodo} />}
+			{viewTodo._id && <ViewTodo viewTodo={viewTodo} setViewTodo={setViewTodo} />}
 			{openModal && <TodoModal setOpenModal={setOpenModal} todo={todo} setTodo={setTodo} />}
 			<ToastContainer />
 		</div>

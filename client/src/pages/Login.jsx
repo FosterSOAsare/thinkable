@@ -4,12 +4,14 @@ import { ToastContainer, toast } from "react-toastify";
 import axiosInstance from "../lib/axios";
 import { useLocation } from "react-router-dom";
 
+import { useUserContext } from "../context/user.context";
+import { useTodoContext } from "../context/todos.context";
+
 import PrimaryInput from "../components/PrimaryInput";
 import PrimaryButton from "../components/PrimaryButton";
 import SocialSignOn from "../components/SocialSignOn";
 
 import { FcGoogle } from "react-icons/fc";
-import { useUserContext } from "../context/user.context";
 const Login = () => {
 	const [disabled, setDisabled] = useState(false);
 	const [data, setData] = useState({
@@ -31,6 +33,7 @@ const Login = () => {
 	}, [error, type, navigate]);
 
 	const { userDispatchFunc } = useUserContext();
+	const { todoDispatchFunc } = useTodoContext();
 
 	function handleChange(name, value) {
 		setData((prev) => ({ ...prev, [name]: value }));
@@ -42,15 +45,21 @@ const Login = () => {
 			if (data.email.length === 0 || data.password.length === 0) {
 				error = "Please fill in all credentials";
 			}
-			console.log(error);
 			if (!error) {
-				const res = await axiosInstance.post("/auth/local/login", data);
+				const user = await axiosInstance.post("/auth/local/login", data);
+				// fetch todos after successful login
+				const todos = await axiosInstance.get("/todos");
+
 				toast.success("Login was successful", {
 					autoClose: 2500,
 				});
 
-				setDisabled(false);
-				userDispatchFunc({ type: "setData", payload: res.data });
+				setTimeout(() => {
+					setDisabled(false);
+					// Set data in context
+					todoDispatchFunc({ type: "setData", payload: todos.data });
+					userDispatchFunc({ type: "setData", payload: user.data });
+				}, 2500);
 			}
 		} catch (e) {
 			setDisabled(false);

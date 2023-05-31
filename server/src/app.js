@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const session = require("express-session");
+const path = require("path");
 
 const authRouter = require("./routes/auth/auth.route");
 const todoRouter = require("./routes/todo/todo.route");
@@ -20,9 +21,11 @@ app.use(
 	})
 );
 
+app.use("/", express.static(path.join(__dirname, "..", "dist")));
+
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/todos", todoRouter);
-
+app.use("/*", express.static(path.join(__dirname, "..", "dist", "index.html")));
 app.use(errorMiddleware);
 
 module.exports = app;
