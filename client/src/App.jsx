@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AuthVerify from "./pages/AuthVerify";
+import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
 				<Route path="/login" element={<ProtectedRoute el={<Login />} />}></Route>
 				<Route path="/login/verify" element={<ProtectedRoute el={<AuthVerify />} />}></Route>
 				<Route path="/register" element={<ProtectedRoute el={<Register />} />}></Route>
+				<Route path="/*" element={<NotFound />}></Route>
 			</Routes>
 		</div>
 	);
