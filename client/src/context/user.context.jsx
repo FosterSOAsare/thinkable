@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useReducer } from "react";
 import axiosInstance from "../lib/axios";
+import createErrorMessage from "../utils/error.axios";
 
 const UserContext = createContext();
 
@@ -14,7 +15,7 @@ const UserProvider = ({ children }) => {
 				const { data } = await axiosInstance.get("/auth/verify");
 				userDispatchFunc({ type: "setData", payload: data });
 			} catch (e) {
-				console.log(e);
+				createErrorMessage(e);
 				userDispatchFunc({ type: "setError", payload: e.message });
 			}
 		})();

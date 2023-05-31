@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { createContext, useContext, useEffect, useReducer } from "react";
 import axiosInstance from "../lib/axios";
+import createErrorMessage from "../utils/error.axios";
 
 const TodoContext = createContext();
 
@@ -14,8 +15,7 @@ const TodoProvider = ({ children }) => {
 				const { data } = await axiosInstance.get("/todos");
 				todoDispatchFunc({ type: "setData", payload: data });
 			} catch (e) {
-				console.log(e);
-				todoDispatchFunc({ type: "setError", payload: e.response.data.error });
+				todoDispatchFunc({ type: "setError", payload: createErrorMessage(e) });
 			}
 		})();
 	}, []);

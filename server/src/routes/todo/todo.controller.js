@@ -17,7 +17,6 @@ const controllerPostTodo = asyncHandler(async (req, res) => {
 });
 const controllerGetUserTodos = asyncHandler(async (req, res) => {
 	let user = req.session.user;
-	console.log(user);
 	// Set session to user's data
 	// Fetch todos
 	let todos = await Todos.find({ author: user._id }, { description: 1, status: 1, title: 1, createdAt: 1, _id: 1 }).sort({ _id: -1 });

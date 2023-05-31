@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
+import { toast } from "react-toastify";
 import PrimaryInput from "../components/PrimaryInput";
 import PrimaryButton from "../components/PrimaryButton";
+
 import axiosInstance from "../lib/axios";
 import { useTodoContext } from "../context/todos.context";
+import createErrorMessage from "../utils/error.axios";
+
 const TodoModal = ({ setOpenModal, todo, setTodo }) => {
 	const { todoDispatchFunc } = useTodoContext();
 
@@ -24,13 +28,20 @@ const TodoModal = ({ setOpenModal, todo, setTodo }) => {
 		// Post Todo
 		try {
 			let { data } = await axiosInstance.post("/todos", { title, description });
-			todoDispatchFunc({ type: "addTodo", payload: data });
-			setTodo({ title: "", description: "" });
-			setOpenModal(false);
+			toast.success("New todo item successfully added", {
+				autoClose: 2500,
+			});
+			setTimeout(() => {
+				todoDispatchFunc({ type: "addTodo", payload: data });
+				setTodo({ title: "", description: "" });
+				setOpenModal(false);
+			}, 2500);
 
 			// Add data to todos
 		} catch (e) {
-			console.log(e);
+			toast.error(createErrorMessage(e), {
+				autoClose: 2500,
+			});
 		}
 	}
 	async function updateTodoItem() {
@@ -42,12 +53,20 @@ const TodoModal = ({ setOpenModal, todo, setTodo }) => {
 		// Update Todo
 		try {
 			let { data } = await axiosInstance.put(`/todos/${todo._id}`, { title, description, status });
+			toast.success("Todo item successfully updated", {
+				autoClose: 2500,
+			});
 			// Add data to todos
-			todoDispatchFunc({ type: "updateTodo", payload: data });
-			setTodo({ title: "", description: "" });
-			setOpenModal(false);
+			setTimeout(() => {
+				todoDispatchFunc({ type: "updateTodo", payload: data });
+				setTodo({ title: "", description: "" });
+				setOpenModal(false);
+			}, 2500);
 		} catch (e) {
-			console.log(e);
+			console.log(createErrorMessage(e));
+			toast.error(createErrorMessage(e), {
+				autoClose: 2500,
+			});
 		}
 	}
 	return (

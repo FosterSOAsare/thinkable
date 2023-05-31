@@ -23,11 +23,6 @@ const controllerAuthLocalLogin = asyncHandler(async (req, res) => {
 	res.status(200).json(req.session.user);
 });
 const controllerAuthThirdParty = asyncHandler(async (req, res) => {
-	if (!req.isAuthenticated()) {
-		console.log("Tte");
-		res.status(401).json({ success: false, message: "Authentication failed" });
-		return;
-	}
 	let { id, provider, email } = req.user;
 	// Check if user exists , if no , create a new user
 	let user = await User.findOne({ id, provider });

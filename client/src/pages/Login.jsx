@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axiosInstance from "../lib/axios";
+import { useLocation } from "react-router-dom";
 
 import PrimaryInput from "../components/PrimaryInput";
 import PrimaryButton from "../components/PrimaryButton";
@@ -15,6 +16,20 @@ const Login = () => {
 		email: "",
 		password: "",
 	});
+	const navigate = useNavigate();
+	const { search } = useLocation();
+	let query = new URLSearchParams(search);
+
+	let error = query.get("error"),
+		type = query.get("type");
+
+	useEffect(() => {
+		if (error && type) {
+			toast.error("An error occurred during oauth authentication with " + type, { autoClose: 2500 });
+			navigate("/login");
+		}
+	}, [error, type, navigate]);
+
 	const { userDispatchFunc } = useUserContext();
 
 	function handleChange(name, value) {
@@ -28,13 +43,15 @@ const Login = () => {
 				error = "Please fill in all credentials";
 			}
 			console.log(error);
-			const res = await axiosInstance.post("/auth/local/login", data);
-			toast.success("Login was successful", {
-				autoClose: 2500,
-			});
+			if (!error) {
+				const res = await axiosInstance.post("/auth/local/login", data);
+				toast.success("Login was successful", {
+					autoClose: 2500,
+				});
 
-			setDisabled(false);
-			userDispatchFunc({ type: "setData", payload: res.data });
+				setDisabled(false);
+				userDispatchFunc({ type: "setData", payload: res.data });
+			}
 		} catch (e) {
 			setDisabled(false);
 

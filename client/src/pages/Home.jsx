@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { useUserContext } from "../context/user.context";
 import { useTodoContext } from "../context/todos.context";
+import { toast, ToastContainer } from "react-toastify";
+
 import axiosInstance from "../lib/axios";
+
 import TodoModal from "../components/TodoModal";
 import Todo from "../components/Todo";
 import ViewTodo from "../components/ViewTodo";
+import createErrorMessage from "../utils/error.axios";
 
 const Home = () => {
 	const { user, userDispatchFunc } = useUserContext();
@@ -27,12 +31,14 @@ const Home = () => {
 	async function deleteTodo(_id) {
 		// Post Todo
 		try {
-			let { data } = await axiosInstance.delete(`/todos/${_id}`);
-			console.log(data);
+			await axiosInstance.delete(`/todos/${_id}`);
+			toast.success("Todo item deleted successfully", {
+				autoClose: 2500,
+			});
 			todoDispatchFunc({ type: "deleteTodo", payload: { _id } });
 			// Add data to todos
 		} catch (e) {
-			console.log(e);
+			toast.error(createErrorMessage(e), { autoClose: 2500 });
 		}
 	}
 
@@ -82,6 +88,7 @@ const Home = () => {
 			</main>
 			{viewTodo._id && <ViewTodo viewTodo={viewTodo} setTodo={setTodo} setOpenModal={setOpenModal} setViewTodo={setViewTodo} deleteTodo={deleteTodo} />}
 			{openModal && <TodoModal setOpenModal={setOpenModal} todo={todo} setTodo={setTodo} />}
+			<ToastContainer />
 		</div>
 	);
 };
